@@ -11,10 +11,11 @@
 <div id="game" class="hidden">
 <section class="scene"><span class="world-label">🌍 今回の転生先</span><div id="worldTag" class="world-name"></div><span id="ageTag" class="tag"></span><h2 id="headline"></h2><p id="story" class="world-desc"></p><div id="birthInfo"></div></section>
 <section class="card"><h3>📊 あなたの今</h3><div class="stats"><div class="stat"><small>体力</small><b id="hp"></b></div><div class="stat"><small>知性</small><b id="int"></b></div><div class="stat"><small>魅力</small><b id="charm"></b></div><div class="stat"><small>信頼</small><b id="rel"></b></div><div class="stat"><small>所持金</small><b id="gold"></b></div><div class="stat"><small>幸福</small><b id="happy"></b></div></div><p class="muted" id="jobInfo"></p></section>
+<section class="card"><h3>🧭 自由行動</h3><p class="muted">選択肢を待つだけでなく、自分から行動してみよう。</p><div class="row"><button id="exploreAction" type="button">🔎 探索する</button><button id="trainAction" type="button">💪 訓練する</button></div><div class="row"><button id="restAction" type="button">🌙 休む</button><button id="talkAction" type="button">💬 誰かと話す</button></div><p id="actionResult" class="choice-hint"></p></section>
 <section class="card"><h3>📖 人生の分岐点</h3><p id="milestoneNotice" class="choice-hint"></p><p id="prompt"></p><p id="deathInfo" class="muted"></p><p class="choice-hint">👇 選びたい項目を1回タップしてね。選択後は自動で次に進むよ。</p><div id="choices" class="choices" aria-live="polite"></div></section>
 <section class="card"><h3>🧭 人生の記録</h3><p id="milestones"></p><h3>📚 この世界の図鑑</h3><div id="codex"></div><h3>📝 あなたの物語</h3><ul id="log" class="log"></ul></section>
 <section class="card"><h3>💾 セーブ</h3><p class="muted">この端末のブラウザに保存されます。</p><div class="row"><button id="save">セーブする</button><button id="load">セーブを読み込む</button></div><div class="row"><button id="restart" class="danger">人生を終えて転生する</button></div></section>
-</div><footer>RE:VERSE · 既存版とは別のテスト版 · v1.7</footer></main>
+</div><footer>RE:VERSE · 既存版とは別のテスト版 · v1.8 修正版</footer></main>
 <script>
 const worlds=[
 {name:"蒼天魔法王国",desc:"魔法が生活に溶け込み、学びと身分が人生を左右する国。",jobs:["魔法薬店の店員","王立学院の研究助手","旅の案内人"],events:["空に浮かぶ図書館","魔法祭の夜","古い塔から届いた手紙"]},
@@ -54,7 +55,10 @@ else if(kind==="train"){let roll=n(1,6);if(roll>=4){let stat=pick(["hp","int","c
 else if(kind==="rest"){s.hp+=n(2,5);s.happy+=n(1,3);msg=pick(["焚き火のそばで休み、体力を取り戻した。","静かな夜に星を眺め、心が落ち着いた。","温かい食事をとり、明日への力が湧いた。"])}
 else{let name=pick(names);let outcomes=["旅の噂を聞き、知らない土地への興味が湧いた。","悩みを聞いてもらい、少し心が軽くなった。","思いがけず意気投合し、信頼が深まった。","話の途中で不穏な事件の噂を知った。"];let outcome=pick(outcomes);s.rel+=2;s.happy+=1;msg=name+"と話した。"+outcome;if(outcome.includes("事件")){s.int+=1;log("不穏な事件の噂：「"+outcome+"」")}}
 s.turn++;s.age+=1;log("自由行動："+msg);$("actionResult").textContent="✨ "+msg;render();if(s.age>=s.maxAge){nextEvent();return}nextEvent()}
-$("exploreAction").onclick=()=>freeAction("explore");$("trainAction").onclick=()=>freeAction("train");$("restAction").onclick=()=>freeAction("rest");$("talkAction").onclick=()=>freeAction("talk");
+if($("exploreAction"))$("exploreAction").onclick=()=>freeAction("explore");
+if($("trainAction"))$("trainAction").onclick=()=>freeAction("train");
+if($("restAction"))$("restAction").onclick=()=>freeAction("rest");
+if($("talkAction"))$("talkAction").onclick=()=>freeAction("talk");
 
 $("birth").addEventListener("click",()=>{try{newLife()}catch(err){console.error("RE:VERSE start error",err);$("start").classList.add("hidden");$("game").classList.remove("hidden");$("worldTag").textContent="転生世界を準備中";$("headline").textContent="人生を始める準備を整えています";$("story").textContent="表示に問題が起きたため、初期化をやり直しています。";try{if(!s)newLife()}catch(retryErr){$("story").textContent="開始処理でエラーが発生しました。ページを再読み込みして、もう一度お試しください。";$("prompt").textContent=String(retryErr.message||retryErr)}}});$("save").onclick=()=>{localStorage.setItem("reverse_v18_save",JSON.stringify(s));log("この人生をセーブした。");render();alert("セーブしたよ！")};$("load").onclick=()=>{try{let x=localStorage.getItem("reverse_v18_save");if(!x){alert("セーブデータがないよ。");return}s=JSON.parse(x);$("start").classList.add("hidden");$("game").classList.remove("hidden");render();if(!s.ended)nextEvent();alert("読み込み成功！")}catch(e){alert("セーブを読み込めなかったよ。")}};$("restart").onclick=()=>{if(!s.ended&&!confirm("今の人生を終えて、新しい人生を始める？"))return;let old=s.achievements||[];newLife();s.achievements=old;log("前の人生の記録を胸に、新たな世界へ転生した。");render();nextEvent(true)};
 </script></body></html>
