@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>RE:VERSE</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151d31;--panel2:#202b45;--text:#f4f6ff;--muted:#b5bfd8;--accent:#9c8cff;--accent2:#63d9d0;--border:#34415f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#20294a 0,#0b1020 58%);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;color:var(--text);line-height:1.6}
+main{max-width:760px;margin:auto;padding:18px 14px 48px}.hero{border:1px solid var(--border);border-radius:22px;overflow:hidden;background:linear-gradient(145deg,#27234f,#142b47 60%,#10202e);padding:24px 20px;position:relative}
+.kicker{font-size:.76rem;letter-spacing:.18em;color:var(--accent2);font-weight:800}.hero h1{font-size:clamp(1.9rem,8vw,3rem);line-height:1.12;margin:8px 0}.hero p{color:#d4dcf2;margin:10px 0 0}.orb{position:absolute;right:-20px;top:15px;width:145px;height:145px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,#b7adff 5%,#7566db 25%,#2c397a 55%,transparent 72%);opacity:.75;filter:drop-shadow(0 0 20px #8c7cff66);pointer-events:none}
+.card{background:rgba(21,29,49,.94);border:1px solid var(--border);border-radius:18px;padding:17px;margin-top:14px}.eyebrow{color:var(--accent2);font-size:.75rem;font-weight:800;letter-spacing:.12em}.title{font-size:1.25rem;font-weight:800;margin:3px 0 8px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{background:#10182a;border-radius:12px;padding:10px}.stat-top{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}.bar{height:7px;background:#303b56;border-radius:99px;overflow:hidden;margin-top:7px}.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px}
+.pills{display:flex;flex-wrap:wrap;gap:7px}.pill{background:#252d4a;border:1px solid #454e79;padding:5px 9px;border-radius:99px;font-size:.82rem}.choices{display:grid;gap:9px;margin-top:13px}.choice,button{font:inherit;color:var(--text);border:1px solid #555d8e;border-radius:13px;background:linear-gradient(135deg,#302e5c,#243c57);padding:13px 14px;text-align:left;cursor:pointer;transition:transform .12s,border-color .12s}.choice:hover,button:hover{border-color:var(--accent2)}.choice:active,button:active{transform:scale(.99)}button.primary{width:100%;text-align:center;background:linear-gradient(100deg,#7566dc,#367f9b);border:0;font-weight:800;margin-top:12px}.choice strong{display:block}.choice small{display:block;color:#d0d8ef;margin-top:3px;font-size:.84rem}.hidden{display:none!important}.event-title{font-size:1.25rem;font-weight:800}.log{max-height:210px;overflow:auto;padding-left:19px;color:var(--muted);font-size:.9rem}.footer{text-align:center;color:#8491b1;font-size:.78rem;padding:20px 5px}.notice{font-size:.84rem;color:var(--muted)}.result{background:linear-gradient(140deg,#2b2653,#17394a);border:1px solid #6258a2;border-radius:15px;padding:15px}
+@media(min-width:560px){main{padding-top:26px}.hero{padding:30px}.grid{grid-template-columns:repeat(5,minmax(0,1fr))}.stat{padding:9px 8px}.stat-top{display:block}.stat-top span:last-child{float:right}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="orb" aria-hidden="true"></div>
+    <div class="kicker">ANIME LIFE SIMULATOR</div>
+    <h1>RE:<span style="color:#bdb4ff">VERSE</span></h1>
+    <p>生まれる世界は選べない。<br>生き方だけは、選べる。</p>
+  </header>
+
+  <section id="start" class="card">
+    <div class="eyebrow">YOUR NEXT LIFE</div>
+    <div class="title">次の人生を始めよう</div>
+    <p class="muted">転生するたびに、世界・種族・才能・運命が変わる。選択を重ねて、自分だけの物語を作ろう。</p>
+    <div class="pills"><span class="pill">5つの世界</span><span class="pill">6種族</span><span class="pill">12の才能</span><span class="pill">0歳から成長</span><span class="pill">実績・転生ボーナス</span><span class="pill">選択で運命が変化</span></div>
+    <button class="primary" id="begin">✨ 転生する</button>
+    <p class="notice">無料の試作品 Ver.0.2。0歳から始まる人生と転生記録を楽しもう。</p>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="card">
+      <div class="eyebrow" id="chapter">CHAPTER 01</div>
+      <div class="title" id="lifeTitle">新しい人生</div>
+      <div class="pills" id="traits"></div>
+      <p id="intro"></p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">STATUS</div>
+      <div class="grid" id="stats"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">LIFE EVENT</div>
+      <div class="event-title" id="eventTitle"></div>
+      <p id="eventText"></p>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">CHRONICLE</div>
+      <div class="title">この人生の記録</div>
+      <ol id="log" class="log"></ol>
+      <button id="save" class="primary">💾 この人生を保存</button>
+      <p id="saveStatus" class="notice"></p>
+    </div>
+  </section>
+
+  <section id="ending" class="hidden">
+    <div class="card">
+      <div class="eyebrow">LIFE COMPLETE</div>
+      <div class="title">ひとつの人生が終わった。</div>
+      <div class="result">
+        <div id="endingTitle" class="event-title"></div>
+        <p id="endingText"></p>
+        <div id="endingTags" class="pills"></div>
+      </div>
+      <p>この人生で得た経験は、次の世界へとつながっていく。</p>
+      <button class="primary" id="nextLife">🌌 次の世界へ転生する</button>
+      <button id="backStart" style="width:100%;margin-top:8px;text-align:center;background:#202a40">タイトルへ戻る</button>
+    </div>
+    <div class="card">
+      <div class="eyebrow">PAST LIVES</div>
+      <div class="title">転生記録</div>
+      <ol id="pastLives" class="log"></ol>
+    </div>
+  </section>
+  <div class="footer">RE:VERSE Prototype · 転生するたび、世界が変わる。</div>
+</main>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const worlds = [
+ {name:'魔法文明',desc:'魔法が暮らしに根づき、才能が未来を左右する世界。'},
+ {name:'魔物支配世界',desc:'人々は城壁の内側で暮らし、外の世界には強大な魔物がいる。'},
+ {name:'平和な農業世界',desc:'畑と小さな町が広がる。戦い以外にも豊かな人生がある。'},
+ {name:'ダンジョン文明',desc:'迷宮の資源が文明を支え、探索者たちが名声を競う世界。'},
+ {name:'崩壊寸前の世界',desc:'古代文明の崩壊が迫る。小さな決断が多くの命を左右する。'}
+];
+const races = [
+ {name:'人間',bonus:[0,0,0,0,0],desc:'バランスのよい種族。'},
+ {name:'エルフ',bonus:[0,2,1,0,0],desc:'知力と魅力に優れる。'},
+ {name:'獣人',bonus:[2,0,1,1,0],desc:'体力と身体技能に優れる。'},
+ {name:'ドワーフ',bonus:[1,1,0,2,0],desc:'ものづくりの技能に優れる。'},
+ {name:'魔族',bonus:[0,2,0,1,0],desc:'魔力と特殊な技能を持つ。'},
+ {name:'スライム',bonus:[1,0,0,1,2],desc:'未知の可能性を秘めている。'}
+];
+const talents = ['剣術','魔法','錬金術','商才','回復','鑑定','能力コピー','召喚','結界','料理','鍛冶','幸運'];
+const personalities = ['努力家','慎重','好奇心旺盛','社交的','冷静','負けず嫌い','お人好し','野心家'];
+const origins = ['貧しい家庭','一般家庭','商家','貴族','孤児'];
+const destinies = ['予言された英雄','追放者','隠された王族','呪われた者','異世界からの転生者','伝説の職人','魔王候補','世界の観測者','失われた記憶','幸運の持ち主'];
+const statNames = ['体力','知力','魅力','技能','運勢'];
+const eventPool = [
+ {ages:[0,2],title:'はじめての笑顔',text:'君が笑うと、家族や周りの人たちがぱっと明るい表情になった。',opts:[{label:'家族にたくさん甘える',desc:'愛情に包まれて育つ',delta:[1,0,2,0,1],out:'家族との絆が深まった。'},{label:'周りをじっと観察する',desc:'小さな世界を知ろうとする',delta:[0,2,0,0,1],out:'観察する力が少しずつ育った。'}]},
+ {ages:[0,4],title:'不思議な魔力',text:'眠っている君の周りで、小さな光がふわふわと浮かんでいる。',opts:[{label:'光に手を伸ばす',desc:'未知の力に触れてみる',delta:[0,2,0,1,1],out:'不思議な力の気配を感じた。'},{label:'安心して眠り続ける',desc:'体を休めて成長する',delta:[2,0,0,0,1],out:'健やかに成長するための休息をとった。'}]},
+ {ages:[3,6],title:'はじめてのお友達',text:'近所の子が、お気に入りのおもちゃを持って遊びに来た。',opts:[{label:'一緒に遊ぶ',desc:'人とのつながりを大切にする',delta:[0,0,2,1,0],out:'初めての友達ができた。'},{label:'おもちゃの仕組みを調べる',desc:'好奇心を満たす',delta:[0,2,0,1,0],out:'遊びながら新しい発見をした。'}]},
+ {ages:[4,8],title:'小さな冒険',text:'家の近くで、見たことのない花が咲いているのを見つけた。',opts:[{label:'花を詳しく調べる',desc:'知識と観察力を伸ばす',delta:[0,2,0,1,1],out:'不思議な花の秘密をひとつ知った。'},{label:'家族に見せに帰る',desc:'身近な人と喜びを分かち合う',delta:[0,0,2,0,1],out:'家族と発見を分かち合った。'}]},
+ {ages:[6,11],title:'学校・学び舎へ',text:'先生が、好きな勉強をひとつ選んでいいと言ってくれた。',opts:[{label:'魔法や学問を学ぶ',desc:'知力を中心に成長',delta:[0,3,0,1,0],out:'学ぶ楽しさを知り、知識が増えた。'},{label:'運動や実技に挑戦する',desc:'体力と技能を鍛える',delta:[2,0,0,2,0],out:'体を動かし、実践的な力を身につけた。'}]},
+ {ages:[7,12],title:'才能のきざし',text:'先生が君の中に、特別な才能の芽を見つけたようだ。',opts:[{label:'得意なことを磨く',desc:'才能を伸ばす',delta:[0,1,0,3,1],out:'自分の得意分野に気づき始めた。'},{label:'苦手なことにも挑戦する',desc:'バランスよく成長',delta:[1,2,1,1,0],out:'苦手を避けずに挑戦する心が育った。'}]},
+ {ages:[10,15],title:'運命のライバル',text:'同じ目標を持つ相手と出会った。相手は君より少し先を進んでいる。',opts:[{label:'負けないように努力する',desc:'技能を大きく伸ばす',delta:[0,0,0,3,1],out:'ライバルの存在が成長の原動力になった。'},{label:'相手と協力する',desc:'絆と知恵を育てる',delta:[0,2,2,1,0],out:'競争だけではない関係を築いた。'}]},
+ {ages:[12,17],title:'進む道を選ぶ',text:'将来の道を考える時期が来た。どんなことに時間を使おう？',opts:[{label:'冒険者を目指す',desc:'体力と技能を鍛える',delta:[2,0,0,2,1],out:'冒険者への道を歩み始めた。'},{label:'研究者や職人を目指す',desc:'知力と技術を磨く',delta:[0,2,0,2,1],out:'専門分野を決め、学びを深めた。'}]},
+ {ages:[14,19],title:'師匠との出会い',text:'旅の達人が、君の努力を見て弟子にならないかと誘ってきた。',opts:[{label:'教えを受ける',desc:'技術を学び取る',delta:[0,2,1,3,0],out:'師匠から大切な技を受け継いだ。'},{label:'自分のやり方を貫く',desc:'独自の道を探す',delta:[0,1,1,1,2],out:'自分ならではの道を探し始めた。'}]},
+ {ages:[16,30],title:'冒険者ギルド',text:'町の掲示板に依頼が並んでいる。最初の大きな仕事を選ぼう。',opts:[{label:'魔物の討伐を引き受ける',desc:'危険の中で技能を磨く',delta:[-1,0,0,3,0],out:'危険な依頼を経験し、技能を磨いた。'},{label:'薬草の採集をする',desc:'堅実に経験を積む',delta:[1,1,0,1,1],out:'堅実な依頼を終え、基礎力が上がった。'}]},
+ {ages:[18,99],title:'謎の旅人',text:'旅人が君の才能に興味を示し、特別な技を教えてくれると言う。',opts:[{label:'教えを受ける',desc:'知力と技能が伸びる',delta:[0,1,0,2,1],out:'旅人から技を学び、技能が磨かれた。'},{label:'自分のやり方を貫く',desc:'運勢と独立心を信じる',delta:[0,0,1,1,2],out:'自分の道を選び、経験を積んだ。'}]},
+ {ages:[18,99],title:'仲間からの誘い',text:'仲間たちが危険な遺跡へ行こうと誘っている。',opts:[{label:'仲間と一緒に挑戦する',desc:'魅力と技能が伸びる',delta:[0,0,2,2,0],out:'仲間と協力し、信頼関係が深まった。'},{label:'今回は見送る',desc:'無理を避けて備える',delta:[1,1,0,0,1],out:'準備を優先し、次の機会に備えた。'}]},
+ {ages:[18,99],title:'人生最大の挑戦',text:'これまでの経験を試す大きな機会が訪れた。',opts:[{label:'全力で挑戦する',desc:'技能と運勢を試す',delta:[-1,1,0,3,1],out:'大きな挑戦に挑み、かけがえのない経験を得た。'},{label:'仲間と作戦を立てる',desc:'知恵と人望を活かす',delta:[0,2,2,0,0],out:'仲間と作戦を練り、力を合わせて乗り越えた。'}]}
+];
+let state=null, usedEvents=[], history=[], lifeNumber=1;
+const rand=n=>Math.floor(Math.random()*n), clamp=n=>Math.max(0,Math.min(10,n));
+function pick(a){return a[rand(a.length)]}
+function loadHistory(){try{const h=JSON.parse(localStorage.getItem('reworld_history')||'[]');return Array.isArray(h)?h:[]}catch(e){return []}}
+function generateLife(){
+ const race=pick(races),world=pick(worlds);let base=[5,5,5,5,5].map((v,i)=>clamp(v+race.bonus[i]+rand(3)-1));
+ let bonus='';try{bonus=localStorage.getItem('reworld_next_bonus')||'';localStorage.removeItem('reworld_next_bonus')}catch(e){}
+ if(bonus==='rebirth')base=base.map(v=>clamp(v+1));
+ state={world,race,talent:pick(talents),personality:pick(personalities),origin:pick(origins),destiny:pick(destinies),stats:base,age:0,events:0,notes:[],lifeNumber,bonus};usedEvents=[];
+ $('start').classList.add('hidden');$('ending').classList.add('hidden');$('game').classList.remove('hidden');
+ $('lifeTitle').textContent=`第${lifeNumber}の人生 · 0歳`;
+ $('traits').innerHTML=[world.name,race.name+'族',state.talent+'の才能',state.personality,state.origin,state.destiny].map(x=>`<span class="pill">${escapeHTML(x)}</span>`).join('');
+ $('intro').textContent=`${world.desc} ${race.desc} 君は「${state.destiny}」という運命を背負い、${state.origin}に生まれた。ここから0歳の人生が始まる。`;
+ renderStats();$('log').innerHTML='';addLog(`0歳：${world.name}の${race.name}族として誕生。才能は「${state.talent}」。`);showEvent();
+}
+function renderStats(){$('stats').innerHTML=state.stats.map((v,i)=>`<div class="stat"><div class="stat-top"><span>${statNames[i]}</span><span>${v}/10</span></div><div class="bar"><div class="fill" style="width:${v*10}%"></div></div></div>`).join('')}
+function addLog(t){state.notes.push(t);$('log').innerHTML=state.notes.slice(-15).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showEvent(){
+ if(state.events>=6){finishLife();return}
+ let available=eventPool.map((e,i)=>({...e,id:i})).filter(e=>!usedEvents.includes(e.id)&&state.age>=e.ages[0]&&state.age<=e.ages[1]);
+ if(!available.length){const future=eventPool.filter(e=>!usedEvents.includes(eventPool.indexOf(e))&&e.ages[0]>state.age);if(future.length)state.age=future.reduce((m,e)=>Math.min(m,e.ages[0]),99);available=eventPool.map((e,i)=>({...e,id:i})).filter(e=>!usedEvents.includes(e.id)&&state.age>=e.ages[0]&&state.age<=e.ages[1]);}
+ if(!available.length){usedEvents=[];available=eventPool.map((e,i)=>({...e,id:i})).filter(e=>state.age>=e.ages[0]&&state.age<=e.ages[1])}
+ const e=pick(available);usedEvents.push(e.id);state.currentEvent=e;
+ $('chapter').textContent=`人生イベント ${String(state.events+1).padStart(2,'0')} / 06 · ${state.age}歳`;$('eventTitle').textContent=e.title;$('eventText').textContent=e.text;$('choices').innerHTML='';
+ e.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML=`<strong>${String.fromCharCode(65+i)}. ${escapeHTML(o.label)}</strong><small>${escapeHTML(o.desc)}</small>`;b.addEventListener('click',()=>choose(o));$('choices').appendChild(b)});
+}
+function choose(o){state.stats=state.stats.map((v,i)=>clamp(v+(o.delta[i]||0)));const eventAge=state.age;state.events++;state.age=state.events===1?Math.max(3,eventAge+3):state.events===2?Math.max(7,eventAge+3):state.events===3?Math.max(12,eventAge+4):state.events===4?Math.max(16,eventAge+4):state.events===5?Math.max(18,eventAge+2):Math.max(20,eventAge+2);addLog(`${eventAge}歳：${state.currentEvent.title} — ${o.out}`);renderStats();$('lifeTitle').textContent=`第${lifeNumber}の人生 · ${state.age}歳`;showEvent()}
+function finishLife(){
+ $('game').classList.add('hidden');$('ending').classList.remove('hidden');const sum=state.stats.reduce((a,b)=>a+b,0);
+ let title,desc;if(state.stats[4]>=8){title='幸運に愛された人生';desc='幾度もの偶然に導かれ、思いがけない道を切り開いた。'}else if(state.stats[3]>=8){title='技を極めし人生';desc='努力と経験を重ね、誰にも真似できない技能を身につけた。'}else if(state.stats[2]>=8){title='仲間に愛された人生';desc='人々との絆が、君の人生を豊かな物語にした。'}else if(state.stats[1]>=8){title='知恵を残した人生';desc='学び続けた知識が、次の世代へと受け継がれていく。'}else if(sum<22){title='波乱に満ちた人生';desc='思い通りにいかないこともあった。それでも君は確かに生き抜いた。'}else{title='自分だけの人生';desc='選択を重ねた結果、誰とも違う君だけの物語が生まれた。'}
+ const record={n:lifeNumber,world:state.world.name,race:state.race.name,title,age:state.age,talent:state.talent,destiny:state.destiny,stats:state.stats};history.push(record);try{localStorage.setItem('reworld_history',JSON.stringify(history));localStorage.setItem('reworld_next_bonus','rebirth')}catch(e){}
+ const achievements=[];if(lifeNumber===1)achievements.push('はじめての転生');if(state.age>=20)achievements.push('成人');if(state.stats.some(v=>v>=10))achievements.push('才能開花');if(state.stats[4]>=8)achievements.push('幸運の星');if(state.race.name==='スライム')achievements.push('未知なる種族');if(state.talent==='幸運')achievements.push('幸運の才能');
+ $('endingTitle').textContent=title;$('endingText').textContent=`${desc} ${state.age}歳まで生き、${state.talent}の才能を持つ${state.race.name}族として人生を終えた。次の転生では全能力に小さなボーナスがつくよ。`;
+ $('endingTags').innerHTML=[state.world.name,state.race.name+'族',state.talent+'の才能',...achievements.map(a=>'🏆 '+a)].map(x=>`<span class="pill">${escapeHTML(x)}</span>`).join('');renderPast();$('saveStatus').textContent='';
+}
+function renderPast(){const past=loadHistory();$('pastLives').innerHTML=(past.length?past.slice(-10).reverse().map(p=>`<li>第${p.n}の人生：${escapeHTML(p.world)}／${escapeHTML(p.race)}族 — ${escapeHTML(p.title)}（${p.age}歳・才能：${escapeHTML(p.talent||'不明')}）</li>`):['まだ記録はありません。']).map(x=>typeof x==='string'&&x.startsWith('<li>')?x:`<li>${x}</li>`).join('')}
+function saveLife(){try{localStorage.setItem('reworld_current',JSON.stringify(state));$('saveStatus').textContent='このブラウザに現在の人生を保存したよ。'}catch(e){$('saveStatus').textContent='保存できなかったよ。ブラウザの設定を確認してね。'}}
+function goStart(){$('game').classList.add('hidden');$('ending').classList.add('hidden');$('start').classList.remove('hidden')}
+$('begin').addEventListener('click',()=>{history=loadHistory();lifeNumber=history.length+1;generateLife()});$('nextLife').addEventListener('click',()=>{history=loadHistory();lifeNumber=history.length+1;generateLife()});$('backStart').addEventListener('click',goStart);$('save').addEventListener('click',saveLife);history=loadHistory();renderPast();
+})();
+
+</script>
+</body>
+</html>
