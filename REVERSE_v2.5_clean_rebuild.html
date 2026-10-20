@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b20">
+<title>RE:VERSE — 転生するたび、世界が変わる。</title>
+<style>
+:root{--bg:#080b20;--panel:#121832;--line:#343d6c;--gold:#f4d38b;--blue:#7ce7ff;--violet:#a59bff;--text:#f5f4ff;--muted:#b8bfdc}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#26316b 0,#111630 38%,var(--bg) 78%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}.wrap{max-width:760px;margin:auto;padding:18px 14px 48px}.hero{position:relative;overflow:hidden;text-align:center;border:1px solid #6066a4;border-radius:24px;padding:36px 18px 28px;background:linear-gradient(180deg,#20285cdd,#10152bdd),radial-gradient(circle at 50% 20%,#7b83ff,transparent 50%);box-shadow:0 18px 60px #0008}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid #8d9dff66;border-radius:50%;width:270px;height:270px;left:50%;top:-160px;transform:translateX(-50%);box-shadow:0 0 35px #8b8bff33}.hero:after{width:340px;height:340px;top:-195px}
+.kicker{font-size:11px;letter-spacing:.28em;color:var(--blue);position:relative}.logo{font-family:Georgia,serif;font-size:clamp(42px,12vw,72px);letter-spacing:.09em;margin:8px 0;color:#fff;text-shadow:0 0 12px #8be8ff,0 0 34px #8d7bff;position:relative}.tag{color:#e0ddff;letter-spacing:.08em;font-size:13px;position:relative}.orbit{font-size:36px;margin:15px auto 6px;color:var(--gold);text-shadow:0 0 20px #f4d38b}.primary{display:block;width:100%;border:1px solid #ffe9b4;border-radius:14px;background:linear-gradient(110deg,#b18b4b,#f4d99a,#b88d4b);color:#17172c;font-weight:800;padding:15px;margin-top:22px;box-shadow:0 5px 22px #d4ad5c40}.secondary{background:#171e40;color:#f6f3ff;border:1px solid #555f91;border-radius:12px;padding:11px 14px}.panel{margin-top:14px;background:#111832ed;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 28px #0003}.hidden{display:none!important}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.label{font-size:12px;color:var(--muted)}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px;color:var(--gold)}.big{font-size:23px;font-weight:800}.meter{height:13px;border-radius:99px;background:#272d50;border:1px solid #454e7d;overflow:hidden;margin:10px 0}.fill{height:100%;width:0%;background:linear-gradient(90deg,#6fe5ff,#a59bff,#f4d38b);border-radius:99px;transition:width .35s}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{background:#1b2345;border-radius:12px;padding:10px}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}.choices{display:grid;gap:9px;margin-top:14px}.choice{background:linear-gradient(120deg,#1b2548,#202044);border:1px solid #555f91;color:var(--text);border-radius:13px;padding:13px;text-align:left;line-height:1.5}.choice:active{transform:scale(.99);background:#30386a}.choice:disabled{opacity:.5}.eventText{line-height:1.8;color:#e7e8ff}.log{font-size:13px;line-height:1.7;color:#c9cfe8;padding-left:20px}.foot{font-size:11px;color:#9099bd;text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section id="titleScreen" class="hero">
+<div class="kicker">AN INFINITE REINCARNATION CHRONICLE</div>
+<div class="logo">RE:VERSE</div>
+<div class="tag">転生するたび、世界が変わる。</div>
+<div class="orbit">✧ ◉ ✧</div>
+<p class="eventText">生まれる世界も、出会いも、運命も。<br>あなたの選択が、次の人生を形づくる。</p>
+<button id="startBtn" class="primary">✦　転生する　✦</button>
+<p class="label">NEW LIFE · ENDLESS POSSIBILITIES</p>
+</section>
+
+<section id="gameScreen" class="hidden">
+<div class="panel">
+<div class="row"><div><div class="label">現在の人生</div><div class="big" id="ageLabel">0歳</div></div><div style="text-align:right"><div class="label">人生段階</div><strong id="stageLabel">誕生</strong></div></div>
+<div class="row" style="margin-top:14px"><span class="label">次の誕生日まで</span><strong id="gaugeLabel">0 / 100</strong></div>
+<div class="meter"><div id="ageFill" class="fill"></div></div>
+<div class="label">選択を重ねると時間が進み、ゲージ満タンで1歳年をとるよ。</div>
+<div class="stats">
+<div class="stat"><span>体力</span><b id="hpStat">10</b></div><div class="stat"><span>知力</span><b id="intStat">10</b></div><div class="stat"><span>判断力</span><b id="judStat">10</b></div>
+<div class="stat"><span>魅力</span><b id="charmStat">10</b></div><div class="stat"><span>所持金</span><b id="goldStat">10 G</b></div><div class="stat"><span>経験</span><b id="expStat">0</b></div>
+</div>
+</div>
+<div class="panel"><h2>✧ あなたの生まれ</h2><p id="birthInfo" class="eventText"></p></div>
+<div class="panel"><div class="label">LIFE EVENT</div><h2 id="eventTitle">人生が始まる</h2><p id="eventText" class="eventText"></p><div id="choices" class="choices"></div></div>
+<div class="panel"><h3>人生の記録</h3><ol id="lifeLog" class="log"></ol></div>
+<button id="restartBtn" class="secondary" style="width:100%;margin-top:14px">♻ 新しい人生へ転生する</button>
+</section>
+<div class="foot">RE:VERSE · Original life simulation prototype</div>
+</main>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const worlds=[
+ {name:"蒼天魔法王国",desc:"魔法学園と古い王家がある、魔法文化の中心地"},
+ {name:"歯車未来都市ゼロ",desc:"魔導機械と人工知能が暮らしを支える巨大都市"},
+ {name:"月影の和風幻想郷",desc:"妖異と人が共存し、古い神々の伝承が息づく土地"},
+ {name:"灰燼の終末王国",desc:"荒廃した大地に、小さな国々が希望をつないでいる"}
+];
+const families=[
+ {tier:"下層家庭",name:"辺境の小さな農家",gold:4,hp:4,int:0,desc:"暮らしは質素。でも、家族は助け合い、たくましく生きている。"},
+ {tier:"下層家庭",name:"旧市街の修理職人の家",gold:6,hp:1,int:2,desc:"壊れた道具を直す家。幼いころから工夫と観察を学べる。"},
+ {tier:"中層家庭",name:"町の商人の家",gold:15,hp:0,int:2,desc:"商売と人付き合いに囲まれ、世の中の動きを学べる。"},
+ {tier:"中層家庭",name:"衛兵の家",gold:10,hp:3,int:0,desc:"規律と鍛錬を大切にする家。体を動かす習慣が身につく。"},
+ {tier:"上層家庭",name:"魔法貴族の家",gold:35,hp:0,int:5,desc:"教育と魔法の知識に恵まれる一方、家の期待も大きい。"},
+ {tier:"上層家庭",name:"大商会の家",gold:45,hp:0,int:3,desc:"資金と人脈に恵まれ、幼いころから交渉を目にする。"}
+];
+let state=null;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function log(t){state.log.unshift(t);state.log=state.log.slice(0,8);$("lifeLog").innerHTML=state.log.map(x=>"<li>"+escapeHtml(x)+"</li>").join("");}
+function escapeHtml(x){return String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function stage(age){return age<7?"幼少期":age<13?"少年・少女期":age<18?"思春期":age<30?"青年期":age<50?"壮年期":age<70?"成熟期":"晩年";}
+function begin(){
+ state={age:0,progress:0,hp:10,int:10,jud:10,charm:10,gold:10,exp:0,world:pick(worlds),family:pick(families),eventCount:0,log:[]};
+ // Family distribution: low 40%, middle 40%, upper 20%; choose tier first.
+ const roll=Math.random(); const tier=roll<.4?"下層家庭":roll<.8?"中層家庭":"上層家庭";
+ state.family=pick(families.filter(f=>f.tier===tier));
+ state.gold+=state.family.gold;state.hp+=state.family.hp;state.int+=state.family.int;
+ $("titleScreen").classList.add("hidden");$("gameScreen").classList.remove("hidden");
+ $("birthInfo").textContent=`${state.world.name}に生まれた。${state.world.desc}。家庭は${state.family.tier}、生まれ先は「${state.family.name}」。${state.family.desc}`;
+ log(`0歳：${state.world.name}の${state.family.name}に誕生。`);
+ update();showEvent();
+}
+const events=[
+ {ages:[0,6],title:"幼い日の好奇心",text:"家の近くで、淡く光る不思議な石を見つけた。どうする？",choices:[
+  {t:"石をよく観察する",stat:"int",n:2,log:"不思議な石を観察し、知識を得た。"},
+  {t:"家族に見せる",stat:"charm",n:2,log:"家族と不思議な発見を分かち合った。"},
+  {t:"安全な場所にしまう",stat:"jud",n:2,log:"慎重に判断し、石を保管した。"}]},
+ {ages:[0,12],title:"新しい友だち",text:"近所の子が遊びに誘ってきた。",choices:[
+  {t:"一緒に遊ぶ",stat:"charm",n:2,log:"友だちとの絆が深まった。"},
+  {t:"一緒に体を鍛える",stat:"hp",n:2,log:"遊びながら体力がついた。"},
+  {t:"本を読んでから合流する",stat:"int",n:2,log:"学びと友情の両方を大切にした。"}]},
+ {ages:[7,17],title:"進路を考える",text:"教師から、得意分野を伸ばしてみないかと提案された。",choices:[
+  {t:"魔法や学問を学ぶ",stat:"int",n:3,log:"学問に打ち込み、知力が伸びた。"},
+  {t:"武術の訓練をする",stat:"hp",n:3,log:"訓練を続け、体力が伸びた。"},
+  {t:"仲間と課題に取り組む",stat:"jud",n:2,extra:"charm",log:"協力して課題を解き、判断力と人間関係を育てた。"}]},
+ {ages:[13,99],title:"思いがけない依頼",text:"街道で困っている旅人を見かけた。荷物から魔物の気配がする。",choices:[
+  {t:"状況を観察して助ける",stat:"jud",n:3,extra:"exp",log:"状況を見極めて旅人を助け、経験を得た。"},
+  {t:"体を張って守る",stat:"hp",n:2,extra:"exp",log:"旅人を守り、冒険経験を得た。"},
+  {t:"衛兵を呼びに行く",stat:"charm",n:1,extra:"jud",log:"周囲と連携し、安全に解決した。"}]},
+ {ages:[16,99],title:"冒険者への誘い",text:"冒険者ギルドの試験を受けないかと誘われた。恋愛とは関係のない、新しい道だ。",choices:[
+  {t:"試験を受ける",stat:"exp",n:3,extra:"gold",log:"ギルドの試験に挑戦し、経験と報酬を得た。"},
+  {t:"職人の道を選ぶ",stat:"int",n:2,extra:"gold",log:"職人の見習いとなり、技術と収入を得た。"},
+  {t:"まだ決めず、各地を旅する",stat:"jud",n:2,extra:"charm",log:"旅を通じて視野と人脈を広げた。"}]},
+ {ages:[18,99],title:"人生を左右する選択",text:"大きな都市から、仕事と学びの機会が届いた。",choices:[
+  {t:"未来都市で技術を学ぶ",stat:"int",n:3,extra:"gold",log:"未来都市で技術を学び、収入も得た。"},
+  {t:"和風幻想郷で調査隊に加わる",stat:"jud",n:3,extra:"exp",log:"幻想郷の調査で経験を積んだ。"},
+  {t:"王国の防衛隊に参加する",stat:"hp",n:3,extra:"exp",log:"防衛隊で鍛えられ、経験を積んだ。"},
+  {t:"自分の時間を大切にする",stat:"charm",n:2,log:"自分のペースを選び、穏やかに暮らした。"}]}
+];
+function showEvent(){
+ const pool=events.filter(e=>state.age>=e.ages[0]&&state.age<=e.ages[1]);
+ const e=pick(pool.length?pool:events.slice(0,2));
+ state.eventCount++;$("eventTitle").textContent=e.title;$("eventText").textContent=e.text;
+ const box=$("choices");box.replaceChildren();
+ e.choices.forEach(c=>{const b=document.createElement("button");b.className="choice";b.textContent=c.t;b.addEventListener("click",()=>choose(c,e));box.appendChild(b);});
+}
+function choose(c,e){
+ if(!state)return;
+ const box=$("choices");Array.from(box.querySelectorAll("button")).forEach(b=>b.disabled=true);
+ state[c.stat]=(state[c.stat]||0)+c.n;
+ if(c.extra){if(c.extra==="gold")state.gold+=8;else state[c.extra]=(state[c.extra]||0)+2;}
+ state.exp+=1;state.progress+=25;log(c.log);
+ if(state.progress>=100){state.progress-=100;state.age++;log(`${state.age}歳になった。人生の新しい季節が始まる。`);}
+ update();
+ setTimeout(()=>{if(state){showEvent();}},180);
+}
+function update(){
+ $("ageLabel").textContent=state.age+"歳";$("stageLabel").textContent=stage(state.age);
+ $("gaugeLabel").textContent=state.progress+" / 100";$("ageFill").style.width=state.progress+"%";
+ $("hpStat").textContent=state.hp;$("intStat").textContent=state.int;$("judStat").textContent=state.jud;$("charmStat").textContent=state.charm;$("goldStat").textContent=state.gold+" G";$("expStat").textContent=state.exp;
+}
+$("startBtn").addEventListener("click",begin);
+$("restartBtn").addEventListener("click",begin);
+})();
+</script>
+</body>
+</html>
